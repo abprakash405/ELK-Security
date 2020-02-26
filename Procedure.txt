@@ -1,0 +1,26 @@
+kubectl apply -f storageclass.yml 
+kubectl apply -f elasticsearch-statefulsets.yml
+kubectl apply -f elasticsearch-svc.yml
+
+#$ kubectl exec -it $(kubectl get pods -n infra | grep elasticsearch-client | sed -n 1p | awk '{print $1}') -n infra -- bin/elasticsearch-setup-passwords auto -b
+
+OR
+#kubectl exec to any pod of elasticsearc and generate auto passwords using: elasticsearch-setup-passwords auto -b 
+
+
+kubectl create secret generic elasticsearch-pw-elastic -n default --from-literal password=MQhkoxewfWUd9lZDh3hf
+kubectl apply -f kibana-deployment.yml
+kubectl apply -f kibana-svc.yml 
+
+
+kubectl create configmap logstashconf --from-file logstash.conf
+kubectl apply -f logstash-deployment.yml 
+kubectl apply -f logstash-svc.yml 
+
+kubectl apply -f filebeat.yml 
+
+#the following pod is just to generate pod logs for validation 
+#kubectl apply -f test-log-pod.yml
+
+
+
